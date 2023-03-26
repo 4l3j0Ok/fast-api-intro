@@ -2,7 +2,6 @@ from fastapi import FastAPI
 import constants
 
 
-
 app = FastAPI()
 # Start server: uvicorn [mmodule_name]:app --reload
 
