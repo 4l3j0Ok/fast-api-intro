@@ -26,7 +26,7 @@ async def alive() -> str:
 
 @app.get("/users")
 async def get_users(id: int = None) -> dict | list:
-    "Retorna un usuario en base al id."
+    "Retorna la lista de usuarios o un usuario concreto en base al id."
     if id:
         user = next((user for user in constants.USERS if user.id == id), constants.ERR_USER_NOT_FOUNT)
         return user
