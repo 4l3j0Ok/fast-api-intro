@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import constants
+from utils import constants
 
 
 app = FastAPI()

@@ -1,14 +1,14 @@
-import users_model
+from models import users
 
 
 USERS = [
-    users_model.User(
+    users.User(
         id=1,
         name="Alejo",
         surname="Sarmiento",
         age=22
     ),
-    users_model.User(
+    users.User(
         id=2,
         name="Carlos",
         surname="Carloso",
