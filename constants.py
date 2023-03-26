@@ -15,3 +15,7 @@ USERS = [
         age=59
     )
 ]
+
+ERR_USER_NOT_FOUNT = {
+    "error": "Usuario no encontrado."
+}

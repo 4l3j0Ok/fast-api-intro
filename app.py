@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 import constants
+
 
 
 app = FastAPI()
@@ -25,17 +26,9 @@ async def alive() -> str:
 
 
 @app.get("/users")
-async def get_users() -> list:
-    "Retorna todos los usuarios registrados."
-    return constants.USERS
-
-
-@app.get("/user/{id}")
-async def get_user(id: int) -> dict:
+async def get_users(id: int = None) -> dict | list:
     "Retorna un usuario en base al id."
-    user = list(filter(lambda user: user.id == id, constants.USERS))
-    try:
-        return user[0]
-    except IndexError:
-        return {"error": "Usuario no encontrado."}
-
+    if id:
+        user = next((user for user in constants.USERS if user.id == id), constants.ERR_USER_NOT_FOUNT)
+        return user
+    return constants.USERS
