@@ -15,6 +15,7 @@ def get_user(id: int):
     user = next((user for user in constants.USERS if user.id == id), None)
     return user
 
+
 def save_user(user):
     success, errors = validate_user(user)
     if not success:

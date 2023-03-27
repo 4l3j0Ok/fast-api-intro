@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import uvicorn
 from utils import constants
 from utils import users as users_utils
 
@@ -48,3 +49,7 @@ async def save_users(users: list) -> dict:
         success_users.append({"user": user, "result": result})
     result = {"success_users": success_users, "failed_users": failed_users}
     return result
+
+
+if __name__ == "__main__":
+    uvicorn.run("app:app", host="localhost", port=8000, reload=True)
