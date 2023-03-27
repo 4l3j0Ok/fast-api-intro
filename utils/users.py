@@ -22,5 +22,5 @@ def save_user(user):
         return False, constants.ERR_SCHEMA.format(err_args=", ".join(error["loc"][0] for error in errors))
     if get_user(user.get("id")):
         return False, constants.ERR_USER_ALREADY_EXISTS
-    constants.users.append(User(**user))
+    constants.USERS.append(User(**user))
     return True, constants.MSG_SUCCESS_SAVE_USER

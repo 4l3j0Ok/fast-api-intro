@@ -28,7 +28,7 @@ async def alive() -> str:
 
 
 @app.get("/users")
-async def get_users(id: int = None) -> User | list[User]:
+async def get_users(id: int = None) -> list[User] | User:
     "Retorna la lista de usuarios o un usuario concreto en base al id."
     if id:
         user = users_utils.get_user(id)
