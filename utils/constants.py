@@ -1,14 +1,14 @@
-from models import users
+from models import users_model
 
 
 USERS = [
-    users.User(
+    users_model.User(
         id=1,
         name="Alejo",
         surname="Sarmiento",
         age=22
     ),
-    users.User(
+    users_model.User(
         id=2,
         name="Carlos",
         surname="Carloso",
@@ -16,6 +16,12 @@ USERS = [
     )
 ]
 
-ERR_USER_NOT_FOUNT = {
-    "error": "Usuario no encontrado."
-}
+ERR_USER_NOT_FOUND = "Usuario no encontrado."
+
+ERR_USER_ALREADY_EXISTS = "El usuario ya existe."
+
+ERR_SCHEMA = "El usuario no tiene la estructura adecuada. Argumentos faltantes: {err_args}."
+
+MSG_SUCCESS_GENERIC = "Éxito al realizar la operación."
+
+MSG_SUCCESS_SAVE_USER = "Exito al guardar el usuario."

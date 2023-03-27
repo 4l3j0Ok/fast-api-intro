@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from utils import constants
+from utils import users as users_utils
 
 
 app = FastAPI()
@@ -28,6 +29,22 @@ async def alive() -> str:
 async def get_users(id: int = None) -> dict | list:
     "Retorna la lista de usuarios o un usuario concreto en base al id."
     if id:
-        user = next((user for user in constants.USERS if user.id == id), constants.ERR_USER_NOT_FOUNT)
-        return user
+        user = users_utils.get_user(id)
+        if not user:
+            return {"error": constants.ERR_USER_NOT_FOUND}
     return constants.USERS
+
+
+@app.post("/users/save")
+async def save_users(users: list) -> dict:
+    "Guarda los usuarios que sean indicados"
+    failed_users = []
+    success_users = []
+    for user in users:
+        success, result = users_utils.save_user(user)
+        if not success:
+            failed_users.append({"user": user, "result": result})
+            continue
+        success_users.append({"user": user, "result": result})
+    result = {"success_users": success_users, "failed_users": failed_users}
+    return result
