@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from utils import constants
 from utils import users as users_utils
+from models.users_model import User
 
 
 app = FastAPI()
@@ -27,17 +28,18 @@ async def alive() -> str:
 
 
 @app.get("/users")
-async def get_users(id: int = None) -> dict | list:
+async def get_users(id: int = None) -> User | list[User]:
     "Retorna la lista de usuarios o un usuario concreto en base al id."
     if id:
         user = users_utils.get_user(id)
         if not user:
             return {"error": constants.ERR_USER_NOT_FOUND}
+        return user
     return constants.USERS
 
 
 @app.post("/users/save")
-async def save_users(users: list) -> dict:
+async def save_users(users: list[dict]) -> dict:
     "Guarda los usuarios que sean indicados"
     failed_users = []
     success_users = []
