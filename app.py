@@ -46,10 +46,24 @@ async def save_users(users: list[dict]) -> dict:
     for user in users:
         success, result = users_utils.save_user(user)
         if not success:
-            failed_users.append({"user": user, "result": result})
+            failed_users.append({"input": user, "result": result})
             continue
-        success_users.append({"user": user, "result": result})
+        success_users.append({"input": user, "result": result})
     result = {"success_users": success_users, "failed_users": failed_users}
+    return result
+
+
+@app.put("/users/update")
+async def update_users(users: list[dict]) -> dict:
+    not_updated_users = []
+    updated_users = []
+    for user in users:
+        success, result = users_utils.update_user(user)
+        if not success:
+            not_updated_users.append({"input": user, "reason": result})
+            continue
+        updated_users.append(result)
+    result = {"updated_users": updated_users, "not_updated_users": not_updated_users}
     return result
 
 
