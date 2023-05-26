@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, responses
 import uvicorn
 from utils import constants
 from utils import users as users_utils
@@ -10,18 +10,15 @@ app = FastAPI()
 
 
 @app.get("/")
-async def home() -> dict:
+async def home() -> str:
     "Página de inicio."
-    msg = {
-        "msg": "Hola"
-    }
-    return msg
+    return responses.RedirectResponse(app.docs_url)
 
 
 @app.get("/alive")
 async def alive() -> str:
     "Chequea si la aplicación está viva."
-    return "¡Estoy vivo!"
+    return "Estoy vivo!"
 
 
 # Users methods.
