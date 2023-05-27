@@ -1,0 +1,4 @@
+ROUTERS = [
+    "users",
+    "products"
+]
