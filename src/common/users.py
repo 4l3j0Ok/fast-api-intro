@@ -32,7 +32,7 @@ def save_user(user):
     if get_users(user.id)[0]:
         return False, constants.ERR_USER_ALREADY_EXISTS.format(id=user.id)
     constants.USERS.append(user)
-    return True, constants.MSG_SUCCESS_SAVE_USER
+    return True, constants.MSG_SUCCESS_SAVE
 
 
 def update_user(user):
@@ -43,9 +43,9 @@ def update_user(user):
     if not success:
         return False, constants.ERR_USER_NOT_FOUND
     index = constants.USERS.index(current_user)
-    update_user = current_user.dict()
-    update_user.update(user)
-    new_user = User(**update_user)
+    updated_user = current_user.dict()
+    updated_user.update(user)
+    new_user = User(**updated_user)
     if new_user == current_user:
         return False, constants.ERR_USER_NOT_CHANGED.format()
     constants.USERS[index] = new_user
