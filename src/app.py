@@ -1,8 +1,7 @@
-from fastapi import FastAPI, responses
+from fastapi import FastAPI, responses, HTTPException
 import uvicorn
-from utils import constants
 from utils import users as users_utils
-from models.users_model import User
+from models.users_model import User, Success
 
 
 app = FastAPI()
@@ -25,43 +24,41 @@ async def alive() -> str:
 
 
 @app.get("/users")
-async def get_users(id: int = None) -> list[User] | User:
+async def get_users(id: int = None) -> User | list[User]:
     "Retorna la lista de usuarios o un usuario concreto en base al id."
     if id:
-        user = users_utils.get_user(id)
-        if not user:
-            return {"error": constants.ERR_USER_NOT_FOUND}
-        return user
-    return constants.USERS
-
-
-@app.post("/users/save")
-async def save_users(users: list[dict]) -> dict:
-    "Guarda los usuarios que sean indicados"
-    failed_users = []
-    success_users = []
-    for user in users:
-        success, result = users_utils.save_user(user)
+        success, result = users_utils.get_users(id)
         if not success:
-            failed_users.append({"input": user, "result": result})
-            continue
-        success_users.append({"input": user, "result": result})
-    result = {"success_users": success_users, "failed_users": failed_users}
-    return result
+            raise HTTPException(status_code=406, detail=result)
+        return result
+    return users_utils.get_users()
+
+
+@app.post("/users/save/")
+async def save_user(user: User) -> Success:
+    "Guarda el usuario que sea indicado."
+    success, result = users_utils.save_user(user)
+    if not success:
+        raise HTTPException(status_code=400, detail=result)
+    return Success(input=user, detail=result)
 
 
 @app.put("/users/update")
-async def update_users(users: list[dict]) -> dict:
-    not_updated_users = []
-    updated_users = []
-    for user in users:
-        success, result = users_utils.update_user(user)
-        if not success:
-            not_updated_users.append({"input": user, "reason": result})
-            continue
-        updated_users.append(result)
-    result = {"updated_users": updated_users, "not_updated_users": not_updated_users}
-    return result
+async def update_user(user: dict) -> Success:
+    "Actualiza el usuario que sea indicado."
+    success, result = users_utils.update_user(user)
+    if not success:
+        raise HTTPException(status_code=400, detail=result)
+    return Success(input=user, detail=result)
+
+
+@app.delete("/users/remove")
+async def remove_user(id: int) -> Success:
+    "Remueve el usuario que sea indicado."
+    success, result = users_utils.remove_user(id)
+    if not success:
+        raise HTTPException(status_code=400, detail=result)
+    return Success(input=id, detail=result)
 
 
 if __name__ == "__main__":
