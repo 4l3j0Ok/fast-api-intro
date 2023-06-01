@@ -1,4 +1,0 @@
-ROUTERS = [
-    "users",
-    "products"
-]

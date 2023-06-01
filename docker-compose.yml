@@ -10,6 +10,8 @@ services:
       - db
     volumes:
       - ./src:/app/src
+    env_file:
+      - .env
 
   db:
     image: mongo
